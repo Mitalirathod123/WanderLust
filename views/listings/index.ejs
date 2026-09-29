@@ -1,0 +1,300 @@
+<% layout("/layouts/boilerplate") -%>
+
+<div class="container mt-4">
+
+    <!-- Page Heading -->
+
+    <h3 class="mb-4">
+        All Listings
+    </h3>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <div class="mb-4">
+
+        <form
+            action="/listings"
+            method="GET"
+            class="d-flex gap-2"
+        >
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Search by title, location or country..."
+                value="<%= search || '' %>"
+            >
+
+            <button
+                type="submit"
+                class="btn btn-dark"
+            >
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ================= FILTERS ================= -->
+
+    <form
+        action="/listings"
+        method="GET"
+        class="row g-2 mb-4"
+    >
+
+        <!-- Country -->
+
+        <div class="col-md-3">
+
+            <input
+                type="text"
+                name="country"
+                class="form-control"
+                placeholder="Country"
+                value="<%= country || '' %>"
+            >
+
+        </div>
+
+
+        <!-- Minimum Price -->
+
+        <div class="col-md-2">
+
+            <input
+                type="number"
+                name="minPrice"
+                class="form-control"
+                placeholder="Min Price"
+                value="<%= minPrice || '' %>"
+                min="0"
+            >
+
+        </div>
+
+
+        <!-- Maximum Price -->
+
+        <div class="col-md-2">
+
+            <input
+                type="number"
+                name="maxPrice"
+                class="form-control"
+                placeholder="Max Price"
+                value="<%= maxPrice || '' %>"
+                min="0"
+            >
+
+        </div>
+
+
+        <!-- ================= SORT ================= -->
+
+        <div class="col-md-3">
+
+            <select
+                name="sort"
+                class="form-select"
+            >
+
+                <option value="">
+                    Sort by Price
+                </option>
+
+                <option
+                    value="price_asc"
+                    <%= sort === "price_asc" ? "selected" : "" %>
+                >
+                    Price: Low to High
+                </option>
+
+                <option
+                    value="price_desc"
+                    <%= sort === "price_desc" ? "selected" : "" %>
+                >
+                    Price: High to Low
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Apply Button -->
+
+        <div class="col-md-2">
+
+            <button
+                type="submit"
+                class="btn btn-dark w-100"
+            >
+                Apply
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <!-- ================= NO RESULTS ================= -->
+
+    <% if (allListings.length === 0) { %>
+
+        <div class="text-center mt-5">
+
+            <h4>
+                No listings found
+            </h4>
+
+            <p class="text-muted">
+                Try searching or changing your filters.
+            </p>
+
+            <a
+                href="/listings"
+                class="btn btn-dark"
+            >
+                View All Listings
+            </a>
+
+        </div>
+
+    <% } else { %>
+
+
+        <!-- ================= LISTINGS ================= -->
+
+        <div
+            class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1"
+        >
+
+            <% for (let listing of allListings) { %>
+
+                <a
+                    href="/listings/<%= listing._id %>"
+                    class="listing-link"
+                >
+
+                    <div class="col">
+
+                        <div class="card">
+
+                            <img
+                                src="<%= listing.image.url %>"
+                                class="card-img-top"
+                                alt="listing_image"
+                                style="height:20rem; object-fit:cover;"
+                                onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6'"
+                            >
+
+                            <div class="card-img-overlay">
+                            </div>
+
+
+                            <div class="card-body">
+
+                                <p class="card-text">
+
+                                    <b>
+                                        <%= listing.title %>
+                                    </b>
+
+                                    <br>
+
+                                    &#8377;
+
+                                    <%= listing.price.toLocaleString("en-IN") %>
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            <% } %>
+
+        </div>
+
+    <% } %>
+   <!-- ================= PAGINATION ================= -->
+
+<% if (totalPages > 1) { %>
+
+    <nav class="mt-5 mb-5">
+
+        <ul class="pagination justify-content-center">
+
+
+            <!-- Previous -->
+
+            <% if (page > 1) { %>
+
+                <li class="page-item">
+
+                    <a
+                        class="page-link"
+                        href="/listings?<%= queryParams %>&page=<%= page - 1 %>"
+                    >
+                        Previous
+                    </a>
+
+                </li>
+
+            <% } %>
+
+
+            <!-- Page Numbers -->
+
+            <% for (let i = 1; i <= totalPages; i++) { %>
+
+                <li
+                    class="page-item <%= page === i ? 'active' : '' %>"
+                >
+
+                    <a
+                        class="page-link"
+                        href="/listings?<%= queryParams %>&page=<%= i %>"
+                    >
+                        <%= i %>
+                    </a>
+
+                </li>
+
+            <% } %>
+
+
+            <!-- Next -->
+
+            <% if (page < totalPages) { %>
+
+                <li class="page-item">
+
+                    <a
+                        class="page-link"
+                        href="/listings?<%= queryParams %>&page=<%= page + 1 %>"
+                    >
+                        Next
+                    </a>
+
+                </li>
+
+            <% } %>
+
+
+        </ul>
+
+    </nav>
+
+<% } %>
+
+</div>

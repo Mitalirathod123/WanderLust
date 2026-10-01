@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -26,7 +28,7 @@ const validateListing = require("./utils/validateListing.js");
 const isLoggedIn = require("./utils/isLoggedIn.js");
 const validateReview = require("./utils/validateReview.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = process.env.MONGO_URL;
 
 
 // ================= DATABASE CONNECTION =================
@@ -40,7 +42,9 @@ main()
     });
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+   await mongoose.connect(MONGO_URL, {
+    family: 4
+});
 }
 
 
@@ -63,7 +67,7 @@ app.use(express.json());
 
 app.use(
     session({
-        secret: "mysecretkey",
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
     })
@@ -1244,14 +1248,20 @@ app.use((req, res, next) => {
     next(new ExpressError(404, "Page not found"));
 });
 
+
+// ================= ERROR HANDLER =================
+
 app.use((err, req, res, next) => {
     const {
         statusCode = 500,
         message = "Something went wrong!"
     } = err;
 
-    // API routes should return JSON
-    if (req.originalUrl.startsWith("/api/")) {
+    // React/API routes should return JSON
+    if (
+        req.originalUrl.startsWith("/api/") ||
+        req.originalUrl === "/login"
+    ) {
         return res.status(statusCode).json({
             success: false,
             message: message
@@ -1265,12 +1275,9 @@ app.use((err, req, res, next) => {
     });
 });
 
+
 // ================= START SERVER =================
 
 app.listen(8080, () => {
-
-    console.log(
-        "server is listening to port 8080"
-    );
-
+    console.log("server is listening to port 8080");
 });

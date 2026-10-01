@@ -55,14 +55,20 @@ function Home() {
         fetch(
             `http://localhost:8080/api/listings?${params.toString()}`
         )
-            .then((response) => {
+            .then(async (response) => {
+                console.log("API STATUS:", response.status);
+
+                const data = await response.json();
+
+                console.log("API RESPONSE:", data);
+
                 if (!response.ok) {
                     throw new Error(
-                        "Failed to fetch listings"
+                        data.error || data.message || "Failed to fetch listings"
                     );
                 }
 
-                return response.json();
+                return data;
             })
             .then((data) => {
                 console.log("LISTINGS API DATA:", data);
@@ -193,10 +199,9 @@ function Home() {
                 <>
                     <div className="listing-grid">
                         {listings.map((listing) => (
-                            <ListingCard
-                                key={listing._id}
-                                listing={listing}
-                            />
+                            <div key={listing._id}>
+                                <ListingCard listing={listing} />
+                            </div>
                         ))}
                     </div>
 

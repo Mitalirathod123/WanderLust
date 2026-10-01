@@ -10,7 +10,7 @@ function EditListing() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/listings/${id}`)
+fetch(`https://wanderlust-backend-lwcg.onrender.com/api/listings/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch listing");
@@ -39,7 +39,7 @@ function EditListing() {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/api/listings/${id}`,
+             `https://wanderlust-backend-lwcg.onrender.com/api/listings/${id}`,
                 {
                     method: "PUT",
                     headers: {

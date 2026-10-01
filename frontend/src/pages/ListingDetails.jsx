@@ -12,7 +12,7 @@ function ListingDetails() {
     const [error, setError] = useState("");
     // Fetch listing
     useEffect(() => {
-        fetch(`http://localhost:8080/api/listings/${id}`)
+fetch(`https://wanderlust-backend-lwcg.onrender.com/api/listings/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch listing");
@@ -39,7 +39,7 @@ function ListingDetails() {
 
     // Fetch current logged-in user
     useEffect(() => {
-        fetch("http://localhost:8080/api/current-user", {
+fetch("https://wanderlust-backend-lwcg.onrender.com/api/current-user", {
             credentials: "include",
         })
             .then((response) => response.json())
@@ -56,7 +56,7 @@ function ListingDetails() {
     }, []);
 
     useEffect(() => {
-    fetch(`http://localhost:8080/api/listings/${id}/reviews`)
+fetch(`https://wanderlust-backend-lwcg.onrender.com/api/listings/${id}/reviews`)
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Failed to fetch reviews");
@@ -89,7 +89,7 @@ function ListingDetails() {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/api/listings/${id}`,
+`https://wanderlust-backend-lwcg.onrender.com/api/listings/${id}`,
                 {
                     method: "DELETE",
                     credentials: "include",

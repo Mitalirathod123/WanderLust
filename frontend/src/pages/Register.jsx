@@ -13,7 +13,7 @@ function Register() {
 
         try {
             const response = await fetch(
-                "http://localhost:8080/register",
+                "https://wanderlust-backend-lwcg.onrender.com/register",
                 {
                     method: "POST",
                     headers: {

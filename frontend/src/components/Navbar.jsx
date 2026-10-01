@@ -6,7 +6,7 @@ function Navbar() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/current-user", {
+fetch("https://wanderlust-backend-lwcg.onrender.com/api/current-user", { 
             credentials: "include",
         })
             .then((response) => response.json())
@@ -23,7 +23,7 @@ function Navbar() {
     }, []);
 
     const handleLogout = () => {
-        fetch("http://localhost:8080/logout", {
+fetch("https://wanderlust-backend-lwcg.onrender.com/logout", {
             credentials: "include",
         })
             .then((response) => response.json())

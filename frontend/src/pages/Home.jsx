@@ -53,7 +53,7 @@ function Home() {
         params.append("page", page);
 
         fetch(
-            `http://localhost:8080/api/listings?${params.toString()}`
+            `https://wanderlust-backend-lwcg.onrender.com/api/listings?${params.toString()}`
         )
             .then(async (response) => {
                 console.log("API STATUS:", response.status);
@@ -89,7 +89,7 @@ function Home() {
     }, [search, country, minPrice, maxPrice, sort, page]);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/current-user", {
+  fetch("https://wanderlust-backend-lwcg.onrender.com/api/current-user", {
             credentials: "include",
         })
             .then((response) => response.json())
